@@ -70,3 +70,8 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+/Jogos 2D/Elements/Library
+/Jogos 2D/Elements/Exe
+/Jogos 2D/Flappy Birds/Library
+/Jogos 2D/Flappy Birds/Logs
+/Jogos 2D/Flappy Birds/exe

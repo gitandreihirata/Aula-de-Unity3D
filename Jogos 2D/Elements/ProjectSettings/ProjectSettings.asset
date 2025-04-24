@@ -141,7 +141,9 @@ PlayerSettings:
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
   bundleVersion: 1.0
-  preloadedAssets: []
+  preloadedAssets:
+  - {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  - {fileID: 11400000, guid: 5665a8dee31c5104a8bac993e2cc774e, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -699,11 +701,11 @@ PlayerSettings:
   m_MobileRenderingPath: 1
   metroPackageName: Elements
   metroPackageVersion: 1.0.0.0
-  metroCertificatePath: 
+  metroCertificatePath: Assets/WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: 
-  metroCertificateIssuer: 
-  metroCertificateNotAfter: 0000000000000000
+  metroCertificateSubject: Software Manager
+  metroCertificateIssuer: Software Manager
+  metroCertificateNotAfter: 008277483ad2dc01
   metroApplicationDescription: Elements
   wsaImages: {}
   metroTileShortName: Elements
@@ -773,7 +775,7 @@ PlayerSettings:
   qnxGraphicConfPath: 
   apiCompatibilityLevel: 6
   captureStartupLogs: {}
-  activeInputHandler: 2
+  activeInputHandler: 1
   windowsGamepadBackendHint: 0
   cloudProjectId: bb601bc4-0b54-4fb7-91c9-9d74ffc3385c
   framebufferDepthMemorylessMode: 0

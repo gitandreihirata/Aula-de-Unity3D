@@ -5,6 +5,14 @@ TagManager:
   serializedVersion: 3
   tags:
   - Ground
+  - WaterPuddle
+  - FirePuddle
+  - AcidPuddle
+  - Acid
+  - Fire
+  - Water
+  - FireMan
+  - WaterGirl
   layers:
   - Default
   - TransparentFX

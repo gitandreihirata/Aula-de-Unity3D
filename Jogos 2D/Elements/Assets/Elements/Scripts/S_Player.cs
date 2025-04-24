@@ -1,20 +1,25 @@
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+[RequireComponent(typeof(Rigidbody2D))]
+public class S_Player : MonoBehaviour
 {
     public GameObject head;
     public GameObject body;
     public float speed = 3f;
     public float jumpForce = 5f;
-    private Rigidbody2D rb;
-    private bool isGrounded;
     public string characterType;
+
+    private Rigidbody2D rb;
     private Animator animatorHead;
     private Animator animatorBody;
-
     private Vector2 moveInput;
     private bool jumpInput;
+    private bool isGrounded;
+
+    public AudioClip deathSound;
+    private AudioSource audioSource;
 
 
     void Start()
@@ -22,36 +27,36 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animatorHead = head.GetComponent<Animator>();
         animatorBody = body.GetComponent<Animator>();
+
+        audioSource = GetComponent<AudioSource>();
+    }
+
+    void Awake()
+    {
+        Debug.Log("S_Player awake on: " + gameObject.name);
+        Debug.Log("Has method OnMove? " + (GetType().GetMethod("OnMove") != null));
+        Debug.Log("Has method OnJump? " + (GetType().GetMethod("OnJump") != null));
     }
 
     void Update()
     {
-        // Movimento
         float move = moveInput.x * speed;
         rb.linearVelocity = new Vector2(move, rb.linearVelocity.y);
 
-        if (Mathf.Abs(move) > 0.1f)
-        {
-            animatorHead.SetBool("isWalking", true);
-            animatorBody.SetBool("isWalking", true);
-            transform.localScale = new Vector3(Mathf.Sign(move), 1, 1);
-        }
-        else
-        {
-            animatorHead.SetBool("isWalking", false);
-            animatorBody.SetBool("isWalking", false);
-        }
+        animatorHead.SetBool("isWalking", Mathf.Abs(move) > 0.1f);
+        animatorBody.SetBool("isWalking", Mathf.Abs(move) > 0.1f);
 
-        // Pulo
+        if (move != 0)
+            transform.localScale = new Vector3(Mathf.Sign(move), 1, 1);
+
         if (jumpInput && isGrounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             isGrounded = false;
-            jumpInput = false; // reset apÃ³s uso
+            jumpInput = false;
         }
     }
 
-    // MÃ©todos de input (configurado via PlayerInput - Unity Events)
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
@@ -70,13 +75,35 @@ public class Player : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
-    {/*
-        if ((characterType == "Fire" && collision.CompareTag("Water")) ||
-            (characterType == "Water" && collision.CompareTag("Fire")) ||
-            collision.CompareTag("Goo"))
+    {
+        if ((characterType == "FireMan" && collision.CompareTag("WaterPuddle")) ||
+            (characterType == "WaterGirl" && collision.CompareTag("FirePuddle")) ||
+            collision.CompareTag("AcidPuddle"))
         {
-            //animatorHead.SetTrigger("Dying");
-            Destroy(gameObject, 0.5f); // Pequeno atraso para mostrar animaï¿½ï¿½o de morte
-        }*/
+            animatorHead.SetTrigger("isDead");
+            animatorBody.SetTrigger("isDead");
+
+            if (deathSound != null && audioSource != null)
+                audioSource.PlayOneShot(deathSound);
+
+            // Desativa movimentação
+            this.enabled = false;
+            Destroy(gameObject, 0.5f);
+
+            // Chamar painel de derrota
+            Object.FindFirstObjectByType<S_GameUIManager>().ShowLoseScreen();
+        }
+    }
+
+}
+
+public static class InputPreserveWorkaround
+{
+    [RuntimeInitializeOnLoadMethod]
+    static void PreserveMethods()
+    {
+        var dummy = new S_Player();
+        dummy.OnMove(default);
+        dummy.OnJump(default);
     }
 }

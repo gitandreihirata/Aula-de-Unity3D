@@ -1,0 +1,2 @@
+1.	Renomeei colocando os nomes com a seguinte regra:
+a.	AniC_[Player]_[NomePersonagem]_[ParteDoCorpo]
